@@ -9,15 +9,16 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     ####### DATA INPUT ##########
-    urdf_file = 'barista_robot_model.urdf'
+    urdf_file = 'box_bot_meshes_collisions_inertias.urdf'
     #xacro_file = "box_bot.xacro"
-    package_description = "barista_robot_description"
+    package_description = "my_box_bot_description"
 
     ####### DATA INPUT END ##########
     print("Fetching URDF ==>")
     robot_desc_path = os.path.join(get_package_share_directory(package_description), "urdf", urdf_file)
 
     # Robot State Publisher
+
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -28,7 +29,7 @@ def generate_launch_description():
     )
 
     # RVIZ Configuration
-    rviz_config_dir = os.path.join(get_package_share_directory(package_description), 'rviz', 'first.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory(package_description), 'rviz', 'urdf_vis.rviz')
 
 
     rviz_node = Node(
@@ -37,8 +38,7 @@ def generate_launch_description():
             output='screen',
             name='rviz_node',
             parameters=[{'use_sim_time': True}],
-            arguments=['-d', rviz_config_dir]
-            )
+            arguments=['-d', rviz_config_dir])
 
     # create and return launch description object
     return LaunchDescription(
