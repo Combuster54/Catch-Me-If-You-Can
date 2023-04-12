@@ -29,7 +29,7 @@ def generate_launch_description():
     )
 
     # RVIZ Configuration
-    rviz_config_dir = os.path.join(get_package_share_directory(package_description), 'rviz', 'urdf_vis.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory(package_description), 'rviz', 'rviz.rviz')
 
 
     rviz_node = Node(

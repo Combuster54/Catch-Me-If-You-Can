@@ -15,7 +15,7 @@ def generate_launch_description():
     # [Roll, Pitch, Yaw]
     orientation = [0.0, 0.0, 0.0]
     # Base Name or robot
-    robot_base_name = "box_bot"
+    robot_base_name = "Morty"
 
     entity_name = robot_base_name
 

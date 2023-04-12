@@ -20,7 +20,7 @@ def generate_launch_description():
     install_dir = get_package_prefix(description_package_name)
 
     # Set the path to the WORLD model files. Is to find the models inside the models folder in my_box_bot_gazebo package
-    gazebo_models_path = os.path.join(pkg_box_bot_gazebo, 'meshes')
+    gazebo_models_path = os.path.join(pkg_box_bot_gazebo, 'worlds')
     # os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
     if 'GAZEBO_MODEL_PATH' in os.environ:

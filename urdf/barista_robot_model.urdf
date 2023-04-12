@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot name="Morty">
 
-  <link name="base_footprint">
-  </link>
+  <!-- <link name="base_footprint">
+  </link> -->
 
   <!-- Body -->
   <link name="base_link">
@@ -26,11 +26,11 @@
 
   </link>
 
-  <joint name="base_link_joint" type="fixed">
+  <!-- <joint name="base_link_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0" />
     <parent link="base_footprint" />
     <child link="base_link" />
-  </joint>
+  </joint> -->
 
   <!-- Wheel Left -->
   <link name="left_wheel">      
@@ -238,6 +238,7 @@
         <material>Gazebo/Blue</material>
     </gazebo>
 
+
   <joint name="back_yaw_joint" type="continuous">
     <origin rpy="0 0 0" xyz="-0.12 0 -0.0775" />
     <parent link="base_link" />
@@ -289,7 +290,7 @@
     <visual>
       <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
       <geometry>
-        <sphere radius="0.03"/>
+        <sphere radius="0.030"/>
       </geometry>
       <material name="blue"/>
     </visual>
@@ -297,7 +298,7 @@
     <collision>
       <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
       <geometry>
-        <sphere radius="0.03"/>
+        <sphere radius="0.030"/>
       </geometry>
     </collision>
 
@@ -600,11 +601,11 @@
           </scan>
           <range>
             <min>0.04</min>
-            <max>10.0</max>
+            <max>16.0</max>
           </range>
         </ray>
         <always_on>true</always_on>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
         <update_rate>100.0</update_rate>
         <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
           <ros>
