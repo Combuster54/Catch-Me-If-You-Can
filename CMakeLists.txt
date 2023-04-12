@@ -12,7 +12,7 @@ find_package(xacro REQUIRED)
 find_package(ros2_control REQUIRED)
 find_package(gazebo_ros2_control REQUIRED)
 find_package(joint_state_broadcaster REQUIRED)
-
+find_package(gazebo_ros REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -33,6 +33,8 @@ install(
     launch
     meshes
     config
+	models
+	worlds
   DESTINATION
     share/${PROJECT_NAME}/
 )

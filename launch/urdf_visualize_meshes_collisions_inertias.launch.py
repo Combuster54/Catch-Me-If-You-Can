@@ -9,9 +9,9 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     ####### DATA INPUT ##########
-    urdf_file = 'box_bot_meshes_collisions_inertias.urdf'
+    urdf_file = 'barista_robot_model.urdf'
     #xacro_file = "box_bot.xacro"
-    package_description = "my_box_bot_description"
+    package_description = "barista_robot_description"
 
     ####### DATA INPUT END ##########
     print("Fetching URDF ==>")

@@ -5,12 +5,9 @@ import random
 from launch_ros.actions import Node
 from launch import LaunchDescription
 
-
 # this is the function launch  system will look for
 
-
 def generate_launch_description():
-
 
     # Position and orientation
     # [X, Y, Z]
@@ -20,8 +17,7 @@ def generate_launch_description():
     # Base Name or robot
     robot_base_name = "box_bot"
 
-
-    entity_name = robot_base_name+"-"+str(int(random.random()*100000))
+    entity_name = robot_base_name
 
     # Spawn ROBOT Set Gazebo
     spawn_robot = Node(
@@ -38,8 +34,6 @@ def generate_launch_description():
                    '-topic', '/robot_description'
                    ]
     )
-
-    
 
     # create and return launch description object
     return LaunchDescription(

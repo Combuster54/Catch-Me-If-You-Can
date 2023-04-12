@@ -13,6 +13,7 @@
   <depend>ros2_control</depend>
   <depend>gazebo_ros2_control</depend>
   <depend>joint_state_broadcaster</depend>
+  <depend>gazebo_ros</depend>
 
     <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
