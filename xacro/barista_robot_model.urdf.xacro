@@ -1,0 +1,315 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bot">
+
+<xacro:include filename="$(find barista_robot_description)/xacro/wheel.xacro" />
+<xacro:include filename="$(find barista_robot_description)/xacro/standoff.xacro" />
+<xacro:include filename="$(find barista_robot_description)/xacro/cup_holder_tray.xacro" />
+<xacro:include filename="$(find barista_robot_description)/xacro/sensor.xacro" />
+
+<!-- Base link  -->
+<xacro:property name="l"             value="0.155"/>
+<xacro:property name="r"             value="0.178"/>
+<xacro:property name="mass"          value="5.5"/>
+
+<!-- Differential Wheel -->
+<xacro:property name="wheel_length"  value="0.0206"/>
+<xacro:property name="wheel_radius"  value="0.0352"/>
+<xacro:property name="wheel_mass"    value="2.5000"/>
+
+<!-- Caster Wheel -->
+<xacro:property name="sphere_radius" value="0.0352"/>
+<xacro:property name="sphere_mass"   value="1.5000"/>
+
+<!-- Rods -->
+<xacro:property name="rod_radius"    value="0.010"/>
+<xacro:property name="rod_length"    value="0.220"/>
+<xacro:property name="rod_mass"      value="0.250"/>
+
+<!-- Head -->
+<xacro:property name="head_radius"   value="0.160"/>
+<xacro:property name="head_length"   value="0.090"/>
+<xacro:property name="head_mass"     value="1.500"/>
+
+<!-- Sensor -->
+<xacro:property name="sensor_radius" value="0.038"/>
+<xacro:property name="sensor_length" value="0.042"/>
+<xacro:property name="sensor_mass"   value="0.300"/>
+<xacro:property name="mesh_path"     value="file://$(find barista_robot_description)/meshes/rplidar_a2.dae"/>
+<xacro:property name="include_laser" value="false"/>
+
+<!-- Base link  -->
+    <link name="base_link">
+        <visual>
+        <geometry>
+            <cylinder length="${l}" radius="${r}"/>
+        </geometry>
+        </visual>
+
+        <collision>
+        <geometry>
+            <cylinder length="${l}" radius="${r}"/>
+        </geometry>
+        </collision>
+
+        <inertial>
+        <mass value="${mass}"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <inertia  ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
+            iyy="${mass*(3*r*r+l*l)/12}" iyz = "0"
+            izz="${mass*(r*r)/2}" />
+        </inertial>
+    </link>
+
+  <!-- Wheel Left -->
+ <xacro:wheel  wheel_name="left_wheel"        wheel_length=  "${wheel_length}" 
+               wheel_radius="${wheel_radius}" wheel_mass=    "${wheel_mass}"/>
+
+  <!-- Wheel Right -->
+  <xacro:wheel wheel_name="right_wheel"       wheel_length=  "${wheel_length}" 
+               wheel_radius="${wheel_radius}" wheel_mass=    "${wheel_mass}"/>
+
+  <joint name="joint_left_wheel" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0.15 -0.0775"/>
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+  </joint>
+
+  <joint name="joint_right_wheel" type="continuous">
+    <origin rpy="0 0 0" xyz="0 -0.15 -0.0775"/>
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+  </joint>
+
+  <!-- Front Caster Wheel -->
+  <xacro:caster_cylinder direction="front" axis="yaw"/>
+  <xacro:caster_cylinder direction="front" axis="roll"/>
+  <xacro:caster_sphere   direction="front" r="${sphere_radius}" 
+                         mass="${sphere_mass}"  />
+
+  <joint name="front_yaw_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0.12 0 -0.0775" />
+    <parent link="base_link" />
+    <child link="front_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <joint name="front_roll_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="front_yaw_link" />
+    <child link="front_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <joint name="front_pitch_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="front_roll_link" />
+    <child link="front_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <!-- Back Caster Wheel -->
+  <xacro:caster_cylinder direction="back" axis="yaw"/>
+  <xacro:caster_cylinder direction="back" axis="roll"/>
+  <xacro:caster_sphere   direction="back" r="${sphere_radius}" 
+                         mass="${sphere_mass}"  />
+
+  <joint name="back_yaw_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="-0.12 0 -0.0775" />
+    <parent link="base_link" />
+    <child link="back_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <joint name="back_roll_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="back_yaw_link" />
+    <child link="back_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <joint name="back_pitch_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="back_roll_link" />
+    <child link="back_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+
+  <xacro:standoff number="${1}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
+  <xacro:standoff number="${2}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
+  <xacro:standoff number="${3}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
+  <xacro:standoff number="${4}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
+
+  <joint name="joint_bar_1" type="fixed">
+    <origin rpy="0 0 0" xyz="0.05 -0.120 0.185"/>
+    <parent link="base_link"/>
+    <child link="rod_1"/>
+  </joint>
+
+  <joint name="joint_bar_2" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.05 -0.120 0.185"/>
+    <parent link="base_link"/>
+    <child link="rod_2"/>
+  </joint>
+
+  <joint name="joint_bar_3" type="fixed">
+    <origin rpy="0 0 0" xyz="0.05 0.120 0.185"/>
+    <parent link="base_link"/>
+    <child link="rod_3"/>
+  </joint>
+
+  <joint name="joint_bar_4" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.05 0.120 0.185"/>
+    <parent link="base_link"/>
+    <child link="rod_4"/>
+  </joint>
+
+  <xacro:cup_holder_tray r="${head_radius}" l="${head_length}" mass="${head_mass}"/>
+
+  <joint name="head_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.2975"/>
+    <parent link="base_link"/>
+    <child link="head"/>
+  </joint>
+
+  <!-- JOINT PUBLISHER -->
+  <gazebo>
+    <plugin name="bot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+      <ros>
+          <remapping>~/out:=joint_states</remapping>
+      </ros>
+      <update_rate>30</update_rate>
+
+      <joint_name>joint_left_wheel</joint_name>
+      <joint_name>joint_right_wheel</joint_name>
+      <joint_name>front_yaw_joint</joint_name>
+      <joint_name>back_yaw_joint</joint_name>
+      <joint_name>front_roll_joint</joint_name>
+      <joint_name>back_roll_joint</joint_name>
+      <joint_name>front_pitch_joint</joint_name>
+      <joint_name>back_pitch_joint</joint_name>
+      
+    </plugin>
+  </gazebo>
+  <!-- Differential drive -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+
+      <!-- wheels -->
+      <left_joint>joint_left_wheel</left_joint>
+      <right_joint>joint_right_wheel</right_joint>
+
+      <!-- kinematics -->
+      <wheel_separation>0.1625</wheel_separation>
+      <wheel_diameter>0.06</wheel_diameter>
+
+      <!-- limits -->
+      <max_wheel_torque>1.0</max_wheel_torque>
+      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+      <!-- output -->
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+
+    </plugin>
+  </gazebo>
+
+
+  <gazebo reference="left_wheel">
+    <kp>1000000000000000000000000000.0</kp>
+    <kd>1000000000000000000000000000.0</kd>
+    <mu1>10.0</mu1>
+    <mu2>10.0</mu2>
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="right_wheel">
+    <kp>1000000000000000000000000000.0</kp>
+    <kd>1000000000000000000000000000.0</kd>
+    <mu1>10.0</mu1>
+    <mu2>10.0</mu2>
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <gazebo reference="front_pitch_link">
+    <kp>1000000000000000000000000000.0</kp>
+    <kd>1000000000000000000000000000.0</kd>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <material>Gazebo/Purple</material>
+  </gazebo>
+
+  <gazebo reference="back_pitch_link">
+    <kp>1000000000000000000000000000.0</kp>
+    <kd>1000000000000000000000000000.0</kd>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+
+    <xacro:if value="${include_laser}">
+        <xacro:laser_scanner r="${sensor_radius}"  l="${sensor_length}" 
+                        mass="${sensor_mass}" path="${mesh_path}"/>
+
+        <joint name="laser_scan_link_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="0.11 0 0.0925"/>
+            <parent link="base_link"/>
+            <child link="laser_scan_link"/>
+            <axis xyz="0 0 0"/>
+        </joint>
+
+        <!-- Sensors -->
+        <gazebo reference="laser_scan_link">
+            <sensor name="sensor_ray" type="ray">
+                <pose>0 0 0 0 0 0</pose>
+                <ray>
+                <scan>
+                    <horizontal>
+                    <samples>200</samples>
+                    <resolution>1.0</resolution>
+                    <min_angle>-3.14</min_angle>
+                    <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.04</min>
+                    <max>16.0</max>
+                </range>
+                </ray>
+                <always_on>true</always_on>
+                <visualize>true</visualize>
+                <update_rate>100.0</update_rate>
+                <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
+                <ros>
+                    <namespace>/Morty</namespace>
+                    <remapping>~/out:=scan</remapping>
+                </ros>
+                <output_type>sensor_msgs/LaserScan</output_type>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:if>
+
+</robot>

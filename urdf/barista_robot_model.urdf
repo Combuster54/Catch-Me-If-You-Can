@@ -480,13 +480,12 @@
     <child link="left_back_support_link"/>
   </joint>
 
-  <link name="head">  
+    <link name="head">  
       <visual>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <cylinder length="0.09" radius="0.160"/>
         </geometry>
-        <material name="grey"/>
       </visual>
 
       <collision>
@@ -501,7 +500,7 @@
         <mass value="1.5"/>
         <inertia ixx="0.0106125" ixy="0.0" ixz="0.0" iyy="0.0106125" iyz="0.0" izz="0.019200000000000002" />
       </inertial>
-  </link>
+    </link>
 
   <joint name="head_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.2975"/>
@@ -585,7 +584,6 @@
     <axis xyz="0 0 0"/>
   </joint>
 
-    
   <!-- Sensors -->
   <gazebo reference="laser_scan_link">
     <sensor name="sensor_ray" type="ray">
@@ -616,7 +614,5 @@
         </plugin>
       </sensor>
 	</gazebo>
-
-
 
 </robot>

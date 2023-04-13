@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rods">
+
+
+<!-- Standoff Macro -->
+<xacro:macro name="standoff" params="number r l mass ">
+  <link name="rod_${number}">      
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${l}" radius="${r}"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${l}" radius="${r}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia  ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
+            iyy="${mass*(3*r*r+l*l)/12}" iyz = "0"
+            izz="${mass*(r*r)/2}" />   
+      </inertial>
+  </link>
+</xacro:macro>
+
+</robot>
