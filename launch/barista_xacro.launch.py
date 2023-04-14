@@ -8,7 +8,6 @@ from ament_index_python.packages import get_package_prefix
 
 import xacro
 
-
 def generate_launch_description():
 
     pkg_box_bot_gazebo = get_package_share_directory('barista_robot_description')
@@ -52,17 +51,36 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='screen',
-        parameters=[params]
+        name='robot_state_publisher_node',
+        emulate_tty=True,        
+        # parameters=[{'use_sim_time': True, 'robot_description': doc.toxml()}],
+        parameters=[params],
+        output='screen'
     )
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+    # RVIZ Configuration
+    rviz_config_dir = os.path.join(get_package_share_directory(description_package_name), 'rviz', 'rviz.rviz')
+
+    rviz_node = Node(
+            package='rviz2',
+            executable='rviz2',
+            output='screen',
+            name='rviz_node',
+            parameters=[{'use_sim_time': True}],
+            arguments=['-d', rviz_config_dir])
+
+
+    spawn_entity = Node(package='gazebo_ros', 
+                        executable='spawn_entity.py',
+                        name='spawn_entity',
                         arguments=['-entity', 'my_box_bot', '-x', '0.0', '-y', '0.0', '-z', '0.2',
                                    '-topic', 'robot_description'],
                         output='screen')
+
 
     return LaunchDescription([
         gazebo,
         robot_state_publisher,
         spawn_entity,
+        rviz_node,
     ])

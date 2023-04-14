@@ -36,7 +36,7 @@
 <xacro:property name="sensor_length" value="0.042"/>
 <xacro:property name="sensor_mass"   value="0.300"/>
 <xacro:property name="mesh_path"     value="file://$(find barista_robot_description)/meshes/rplidar_a2.dae"/>
-<xacro:property name="include_laser" value="false"/>
+<xacro:property name="include_laser" value="true"/>
 
 <!-- Base link  -->
     <link name="base_link">
@@ -303,7 +303,6 @@
                 <update_rate>100.0</update_rate>
                 <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <namespace>/Morty</namespace>
                     <remapping>~/out:=scan</remapping>
                 </ros>
                 <output_type>sensor_msgs/LaserScan</output_type>
