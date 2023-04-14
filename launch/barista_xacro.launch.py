@@ -35,7 +35,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-        launch_arguments={"verbose": "false", 'pause': 'true'}.items(),
+        launch_arguments={"verbose": "false", 'pause': 'false'}.items(),
     )
 
     robot_model_path = os.path.join(
@@ -53,7 +53,6 @@ def generate_launch_description():
         executable='robot_state_publisher',
         name='robot_state_publisher_node',
         emulate_tty=True,        
-        # parameters=[{'use_sim_time': True, 'robot_description': doc.toxml()}],
         parameters=[params],
         output='screen'
     )
@@ -73,7 +72,7 @@ def generate_launch_description():
     spawn_entity = Node(package='gazebo_ros', 
                         executable='spawn_entity.py',
                         name='spawn_entity',
-                        arguments=['-entity', 'my_box_bot', '-x', '0.0', '-y', '0.0', '-z', '0.2',
+                        arguments=['-entity', 'robot', '-x', '0.0', '-y', '0.0', '-z', '0.2',
                                    '-topic', 'robot_description'],
                         output='screen')
 
