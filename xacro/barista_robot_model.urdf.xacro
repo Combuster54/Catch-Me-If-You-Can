@@ -39,7 +39,7 @@
 <xacro:property name="sensor_length" value="0.042"/>
 <xacro:property name="sensor_mass"   value="0.300"/>
 <xacro:property name="mesh_path"     value="file://$(find barista_robot_description)/meshes/rplidar_a2.dae"/>
-<xacro:property name="include_laser" value="false"/>
+<xacro:property name="include_laser" value="true"/>
 
 
   <link name="base_footprint">
