@@ -10,7 +10,7 @@ class BotOdomToTf : public rclcpp::Node
 {
 public:
   explicit BotOdomToTf(const std::string& robot_base_frame = "/morty/odom")
-    : Node("odom_to_tf_broadcaster_node"), robot_base_frame_{robot_base_frame}
+    : Node("morty_tf"), robot_base_frame_{robot_base_frame}
   {
     init_tf_message();
 

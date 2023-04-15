@@ -55,6 +55,13 @@ def generate_launch_description():
         launch_arguments=gazebo_launch_args.items(),
     )
 
+
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher'
+    )
+
     # Define the robot model files to be used
     robot_desc_file = "barista_robot_model.urdf.xacro"
     robot_desc_path = os.path.join(get_package_share_directory(
@@ -98,7 +105,7 @@ def generate_launch_description():
     )
 
     #RVIZ
-    rviz_config_dir = os.path.join(get_package_share_directory(description_package_name), 'rviz', 'last.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory(description_package_name), 'rviz', 'see_config.rviz')
     rviz_node = Node(
             package='rviz2',
             executable='rviz2',
@@ -107,12 +114,25 @@ def generate_launch_description():
             parameters=[{'use_sim_time': True}],
             arguments=['-d', rviz_config_dir])
 
+    tf_rick = Node(
+        package='barista_robot_description',
+        executable='world_to_rick',
+        output='screen')
+        
+    tf_morty = Node(
+        package='barista_robot_description',
+        executable='world_to_morty',
+        output='screen')
+
     return LaunchDescription([
         world_file_arg,
         gazebo,
+        joint_state_publisher_node,
         rsp_robot1,
         rsp_robot2,
         spawn_robot1,
         spawn_robot2,
-        rviz_node
+        rviz_node,
+        tf_rick,
+        tf_morty
     ])
