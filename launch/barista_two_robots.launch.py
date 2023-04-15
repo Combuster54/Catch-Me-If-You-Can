@@ -97,11 +97,22 @@ def generate_launch_description():
                    '-topic', robot_name_2+'/robot_description']
     )
 
+    #RVIZ
+    rviz_config_dir = os.path.join(get_package_share_directory(description_package_name), 'rviz', 'last.rviz')
+    rviz_node = Node(
+            package='rviz2',
+            executable='rviz2',
+            output='screen',
+            name='rviz_node',
+            parameters=[{'use_sim_time': True}],
+            arguments=['-d', rviz_config_dir])
+
     return LaunchDescription([
         world_file_arg,
         gazebo,
         rsp_robot1,
         rsp_robot2,
         spawn_robot1,
-        spawn_robot2
+        spawn_robot2,
+        rviz_node
     ])

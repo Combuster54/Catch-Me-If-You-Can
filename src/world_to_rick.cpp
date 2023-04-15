@@ -9,38 +9,38 @@
 class BotOdomToTf : public rclcpp::Node
 {
 public:
-  explicit BotOdomToTf(const std::string& robot_base_frame = "/morty/odom")
+  explicit BotOdomToTf(const std::string& robot_base_frame = "/rick/odom")
     : Node("odom_to_tf_broadcaster_node"), robot_base_frame_{robot_base_frame}
   {
     init_tf_message();
 
     subscriber_ = create_subscription<nav_msgs::msg::Odometry>(
-      "/morty/odom", rclcpp::QoS{1}.durability_volatile().best_effort(),
+      "/rick/odom", rclcpp::QoS{1}.durability_volatile().best_effort(),
       std::bind(&BotOdomToTf::listener_callback, this, std::placeholders::_1));
 
     br_ = std::make_unique<tf2_ros::TransformBroadcaster>(this);
-    RCLCPP_WARN(get_logger(), "odom_to_tf_broadcaster_node READY!");
+    RCLCPP_WARN(get_logger(), "world_to_rick READY!");
   }
 
 private:
   void listener_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
   {
     update_data(msg);
-    RCLCPP_DEBUG(get_logger(), "Odom VALUE: '%f'", morty_odom.pose.pose.position.x);
+    RCLCPP_DEBUG(get_logger(), "Odom VALUE: '%f'", rick_odom.pose.pose.position.x);
     broadcast_new_tf();
   }
 
   void update_data(const nav_msgs::msg::Odometry::SharedPtr msg)
   {
-    morty_odom = *msg;
+    rick_odom = *msg;
   }
 
   std::tuple<geometry_msgs::msg::Point, geometry_msgs::msg::Quaternion, rclcpp::Time>
   get_odom_data() const
   {
-    const auto time_header = morty_odom.header.stamp;
-    const auto position = morty_odom.pose.pose.position;
-    const auto orientation = morty_odom.pose.pose.orientation;
+    const auto time_header = rick_odom.header.stamp;
+    const auto position = rick_odom.pose.pose.position;
+    const auto orientation = rick_odom.pose.pose.orientation;
     return  std::make_tuple(position, orientation,time_header);
 
   }
@@ -68,7 +68,7 @@ private:
   }
 
   std::string robot_base_frame_;
-  nav_msgs::msg::Odometry morty_odom;
+  nav_msgs::msg::Odometry rick_odom;
   geometry_msgs::msg::TransformStamped transform_stamped_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr subscriber_;
   std::unique_ptr<tf2_ros::TransformBroadcaster> br_;
