@@ -7,9 +7,17 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(urdf REQUIRED)
+find_package(xacro REQUIRED)
+find_package(ros2_control REQUIRED)
+find_package(gazebo_ros2_control REQUIRED)
+find_package(joint_state_broadcaster REQUIRED)
+find_package(gazebo_ros REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs  REQUIRED)
+# find_package(teleop_twist_keyboard  REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -22,5 +30,29 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(world_to_odom src/world_to_odom.cpp)
+ament_target_dependencies(world_to_odom rclcpp nav_msgs geometry_msgs tf2_ros)
+
+
+install(TARGETS
+   world_to_odom
+   DESTINATION lib/${PROJECT_NAME}
+ )
+
+
+install(
+  DIRECTORY
+    urdf
+    rviz
+    launch
+    meshes
+    config
+	models
+	worlds
+	xacro
+  DESTINATION
+    share/${PROJECT_NAME}/
+)
 
 ament_package()

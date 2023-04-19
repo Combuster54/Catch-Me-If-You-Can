@@ -8,8 +8,19 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>ros2_control</depend>
+  <depend>gazebo_ros2_control</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>gazebo_ros</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <!-- <depend>teleop_twist_keyboard</depend> -->
 
-  <test_depend>ament_lint_auto</test_depend>
+    <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <export>

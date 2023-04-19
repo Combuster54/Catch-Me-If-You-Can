@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wheel">
+
+<!-- Wheel Macro -->
+<xacro:macro name="wheel" params="wheel_name wheel_length wheel_radius wheel_mass">
+  <link name="${wheel_name}">    
+      <visual>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <mass value="${wheel_mass}"/>
+        <inertia ixx="0.0006927083333333334" ixy="0.0" ixz="0.0" iyy="0.0006927083333333334" iyz="0.0" izz="0.001125" />
+      </inertial>
+  </link>
+</xacro:macro>
+
+<!-- Caster Wheel Macro for Cylinder link -->
+<xacro:macro name="caster_cylinder" params="direction axis">
+  <link name= "${direction}_${axis}_link">
+      <visual>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>          
+          <cylinder length="0.005" radius="0.0045000000000000005"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="0.005" radius="0.0045000000000000005"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+          <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+          <mass value="0.001"/>
+          <inertia ixx="5.145833333333334e-09" ixy="0" ixz="0" iyy="5.145833333333334e-09" iyz="0" izz="1.0125000000000003e-08"/>
+      </inertial>
+
+  </link>
+</xacro:macro>
+
+<!-- Caster Wheel Macro for Sphere -->
+<xacro:macro name="caster_sphere" params="direction r mass">
+  <link name= "${direction}_pitch_link">
+    <visual>
+      <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="${r}"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="${r}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia  
+            ixx="${2*mass*r*r/5}" ixy = "0" ixz = "0"
+            iyy="${2*mass*r*r/5}" iyz = "0"
+            izz="${2*mass*r*r/5}"/>
+    </inertial>
+  </link>
+</xacro:macro>
+</robot>
