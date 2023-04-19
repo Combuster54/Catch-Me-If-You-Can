@@ -114,15 +114,11 @@ def generate_launch_description():
             parameters=[{'use_sim_time': True}],
             arguments=['-d', rviz_config_dir])
 
-    tf_rick = Node(
+    world_2_odom = Node(
         package='barista_robot_description',
-        executable='world_to_rick',
+        executable='world_to_odom',
         output='screen')
         
-    tf_morty = Node(
-        package='barista_robot_description',
-        executable='world_to_morty',
-        output='screen')
 
     return LaunchDescription([
         world_file_arg,
@@ -133,6 +129,5 @@ def generate_launch_description():
         spawn_robot1,
         spawn_robot2,
         rviz_node,
-        tf_rick,
-        tf_morty
+        world_2_odom
     ])

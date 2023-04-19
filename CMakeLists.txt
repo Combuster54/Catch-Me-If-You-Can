@@ -29,18 +29,12 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(world_to_morty src/world_to_morty.cpp)
-
-ament_target_dependencies(world_to_morty rclcpp nav_msgs geometry_msgs tf2_ros)
-
-add_executable(world_to_rick src/world_to_rick.cpp)
-
-ament_target_dependencies(world_to_rick rclcpp nav_msgs geometry_msgs tf2_ros)
+add_executable(world_to_odom src/world_to_odom.cpp)
+ament_target_dependencies(world_to_odom rclcpp nav_msgs geometry_msgs tf2_ros)
 
 
 install(TARGETS
-   world_to_rick
-   world_to_morty
+   world_to_odom
    DESTINATION lib/${PROJECT_NAME}
  )
 
