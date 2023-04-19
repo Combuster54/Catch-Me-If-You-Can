@@ -34,17 +34,9 @@ endif()
 add_executable(world_to_odom src/world_to_odom.cpp)
 ament_target_dependencies(world_to_odom rclcpp nav_msgs geometry_msgs tf2_ros)
 
-add_executable(morty_follower src/morty_follower.cpp)
-ament_target_dependencies(morty_follower rclcpp nav_msgs geometry_msgs tf2_ros tf2_geometry_msgs )
-target_include_directories(morty_follower PRIVATE
-  ${geometry_msgs_INCLUDE_DIRS}
-  ${tf2_ros_INCLUDE_DIRS}
-)
-
 
 install(TARGETS
    world_to_odom
-   morty_follower
    DESTINATION lib/${PROJECT_NAME}
  )
 
