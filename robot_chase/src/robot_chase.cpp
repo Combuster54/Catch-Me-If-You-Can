@@ -11,6 +11,7 @@
 class RobotChaseNode : public rclcpp::Node {
 
 public:
+  int count = 0;
   RobotChaseNode()
       : Node("robot_chase"), tf_buffer_(this->get_clock()),
         tf_listener_(tf_buffer_) {
@@ -39,8 +40,8 @@ public:
       double error_yaw = atan2(transform.transform.translation.y,
                                transform.transform.translation.x);
 
-      RCLCPP_INFO(this->get_logger(), "error_distance : %f", error_distance);
-      RCLCPP_INFO(this->get_logger(), "error_yaw : %f", error_yaw);
+    //   RCLCPP_INFO(this->get_logger(), "error_distance : %f", error_distance);
+    //   RCLCPP_INFO(this->get_logger(), "error_yaw : %f", error_yaw);
 
       // Definir la velocidad angular y lineal
       double kp_yaw =
@@ -50,25 +51,26 @@ public:
       double angular_vel = kp_yaw * error_yaw;
       double linear_vel = kp_distance * error_distance;
 
-      RCLCPP_INFO(this->get_logger(), "kp_yaw : %f", kp_yaw);
-      RCLCPP_INFO(this->get_logger(), "kp_distance : %f", kp_distance);
-      RCLCPP_INFO(this->get_logger(), "angular_vel : %f", angular_vel);
-      RCLCPP_INFO(this->get_logger(), "linear_vel : %f", linear_vel);
+    //   RCLCPP_INFO(this->get_logger(), "kp_yaw : %f", kp_yaw);
+    //   RCLCPP_INFO(this->get_logger(), "kp_distance : %f", kp_distance);
+    //   RCLCPP_INFO(this->get_logger(), "angular_vel : %f", angular_vel);
+    //   RCLCPP_INFO(this->get_logger(), "linear_vel : %f", linear_vel);
 
-      // Crear el mensaje de velocidad y publicarlo en un tema
-      this->cmd_vel.angular.z = angular_vel;
-      this->cmd_vel.linear.x = linear_vel;
-      publisher_->publish(this->cmd_vel);
+      // Menor a esto es que Rick ya alcanzo a Morty y ya colisionaron, asi que
+      // no hay razon para seguir avanzando
+      if (error_distance <= 0.38) {
 
-    // With this, morty doesn't makes crazy when rick colision with him
-    //   if (error_distance <= 0.38) {
-
-    //     RCLCPP_INFO(this->get_logger(), "Rick got Morty! Rick wins!");
-    //     this->cmd_vel.angular.z = 0;
-    //     this->cmd_vel.linear.x = 0;
-    //     publisher_->publish(this->cmd_vel);
-    //     timer_->cancel();
-    //   }
+        // count +=1;
+        RCLCPP_INFO(this->get_logger(), "Rick caught Morty");
+        this->cmd_vel.angular.z = 0;
+        this->cmd_vel.linear.x = 0;
+        publisher_->publish(this->cmd_vel);
+      } else {
+        // Sigue a Morty
+        this->cmd_vel.angular.z = angular_vel;
+        this->cmd_vel.linear.x = linear_vel;
+        publisher_->publish(this->cmd_vel);
+      }
     } catch (tf2::TransformException &ex) {
       RCLCPP_WARN(this->get_logger(), "%s", ex.what());
     }
