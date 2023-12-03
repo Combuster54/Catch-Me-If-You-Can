@@ -153,7 +153,6 @@
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-
   <xacro:standoff number="${1}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
   <xacro:standoff number="${2}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>
   <xacro:standoff number="${3}" r="${rod_radius}" l="${rod_length}" mass="${rod_mass}"/>

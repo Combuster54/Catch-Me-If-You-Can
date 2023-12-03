@@ -79,4 +79,5 @@
     </inertial>
   </link>
 </xacro:macro>
+
 </robot>
